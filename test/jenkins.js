@@ -679,6 +679,28 @@ describe('jenkins', function() {
         });
       });
 
+      it('should list jobs in subdirectory', function(done) {
+        var self = this;
+
+        self.nock
+          .get('/job/' + this.folderName + '/api/json')
+          .reply(200, fixtures.jobList);
+
+          self.jenkins.job.list(this.folderName, function(err, data) {
+            should.not.exist(err);
+  
+            should.exist(data);
+  
+            data.should.not.be.empty;
+  
+            data.forEach(function(job) {
+              job.should.have.properties('name');
+            });
+  
+            done();
+          });
+      });
+
       nit('should handle corrupt responses', function(done) {
         var data = '"trash';
 

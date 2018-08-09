@@ -37,6 +37,7 @@ function setup(opts, done) {
   };
 
   test.jobName = unique('job');
+  test.folderName = unique('sub');
   test.nodeName = unique('node');
   test.viewName = unique('view');
 
@@ -50,6 +51,7 @@ function setup(opts, done) {
   if (opts.job) {
     jobs.createJob = function(next) {
       jenkins.job.create(test.jobName, fixtures.jobCreate, next);
+      jenkins.job.create(test.folderName + '/' + test.jobName, fixtures.jobCreate, next);
     };
   }
 
